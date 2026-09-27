@@ -15,26 +15,30 @@ import NiceCertified.TwoThree.Base15
 import NiceCertified.TwoThree.Base16
 import NiceCertified.TwoThree.Base17
 import NiceCertified.TwoThree.Base18
+import NiceCertified.TwoThree.Base19
+import NiceCertified.TwoThree.Base20
 
 /-!
-# `(2,3)`: every base up to 18
+# `(2,3)`: every base up to 20
 
-Each base other than 10 has its own generated certificate module.  Base 10 is
+Each base other than 10 has its own generated modules: one part per bounded
+piece of the kernel's search, chained by imports so they are checked one at a time.  Base 10 is
 `Nice.base_ten_nice_iff` from nice-numbers-lean, whose certificate would fail
 anyway, because 69 is in its band.
 -/
 
 namespace Nice.Cert
 
-/-- **Up to base 18, 69 in base 10 is the only `(2,3)`-nice number.** -/
-theorem two_three_upto_18 {b n : Nat} (hb : 2 ≤ b) (hb' : b ≤ 18) :
+/-- **Up to base 20, 69 in base 10 is the only `(2,3)`-nice number.** -/
+theorem two_three_upto_20 {b n : Nat} (hb : 2 ≤ b) (hb' : b ≤ 20) :
     Pandigital b 2 3 n ↔ b = 10 ∧ n = 69 := by
   constructor
   · intro hp
     have : b = 2 ∨ b = 3 ∨ b = 4 ∨ b = 5 ∨ b = 6 ∨ b = 7 ∨ b = 8 ∨ b = 9 ∨ b = 10 ∨
-        b = 11 ∨ b = 12 ∨ b = 13 ∨ b = 14 ∨ b = 15 ∨ b = 16 ∨ b = 17 ∨ b = 18 := by omega
+        b = 11 ∨ b = 12 ∨ b = 13 ∨ b = 14 ∨ b = 15 ∨ b = 16 ∨ b = 17 ∨ b = 18 ∨
+        b = 19 ∨ b = 20 := by omega
     rcases this with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
-        rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+        rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     · exact absurd hp (base_2_empty_2_3 n)
     · exact absurd hp (base_3_empty_2_3 n)
     · exact absurd hp (base_4_empty_2_3 n)
@@ -52,6 +56,8 @@ theorem two_three_upto_18 {b n : Nat} (hb : 2 ≤ b) (hb' : b ≤ 18) :
     · exact absurd hp (base_16_empty_2_3 n)
     · exact absurd hp (base_17_empty_2_3 n)
     · exact absurd hp (base_18_empty_2_3 n)
+    · exact absurd hp (base_19_empty_2_3 n)
+    · exact absurd hp (base_20_empty_2_3 n)
   · rintro ⟨rfl, rfl⟩
     exact sixtynine_pandigital
 
