@@ -409,7 +409,7 @@ theorem cert_17_2_3_ok : checkChain 17 2 3 (4912 + 1) cert_17_2_3 15260 = true :
   decide +kernel
 
 /-- **No `(2,3)`-nice number exists in base 17.** -/
-theorem base_seventeen_empty_2_3 (n : Nat) : ¬ Pandigital 17 2 3 n :=
+theorem base_17_empty_2_3 (n : Nat) : ¬ Pandigital 17 2 3 n :=
   no_nice_of_cert (lo := 4912) (hi := 15260) (by decide) (by decide) (by decide)
     cert_17_2_3 cert_17_2_3_ok n
 

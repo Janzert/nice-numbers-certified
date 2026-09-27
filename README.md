@@ -15,9 +15,36 @@ base 17" means exactly what it means there. Proofs are in Lean 4 core, with no M
 
 ## What is proved
 
-| base | pair | statement | intervals | candidates checked one by one |
-|---|---|---|---|---|
-| 17 | `(2,3)` | `Nice.Cert.base_seventeen_empty_2_3` | 392 | 5 831 |
+**`Nice.Cert.two_three_upto_18`:** for every base `2 ≤ b ≤ 18`, `n` is `(2,3)`-nice in
+base `b` if and only if `b = 10` and `n = 69`.
+
+Base 10 comes from nice-numbers-lean (`Nice.base_ten_nice_iff`). Every other base has its own
+module, `NiceCertified/TwoThree/Base<b>.lean`, whose theorem `Nice.Cert.base_<b>_empty_2_3`
+says the base has no `(2,3)`-nice number. The certificates:
+
+| base | intervals | wrong lengths | top-digit clash | scanned | candidates scanned |
+|---|---|---|---|---|---|
+| 2 | 1 | 0 | 1 | 0 | 0 |
+| 3 | 0 | 0 | 0 | 0 | 0 |
+| 4 | 2 | 1 | 1 | 0 | 0 |
+| 5 | 1 | 0 | 0 | 1 | 2 |
+| 6 | 2 | 2 | 0 | 0 | 0 |
+| 7 | 2 | 1 | 0 | 1 | 7 |
+| 8 | 3 | 2 | 0 | 1 | 7 |
+| 9 | 4 | 2 | 0 | 2 | 12 |
+| 11 | 2 | 2 | 0 | 0 | 0 |
+| 12 | 17 | 1 | 3 | 13 | 150 |
+| 13 | 19 | 2 | 0 | 17 | 212 |
+| 14 | 32 | 2 | 0 | 30 | 405 |
+| 15 | 135 | 1 | 9 | 125 | 1 871 |
+| 16 | 2 | 2 | 0 | 0 | 0 |
+| 17 | 392 | 1 | 48 | 343 | 5 831 |
+| 18 | 528 | 2 | 97 | 429 | 7 719 |
+
+Some of these bases are also ruled out by general theorems in nice-numbers-lean. For example,
+`b ≡ 1 (mod 5)` makes the digit lengths impossible, which is why bases 6, 11 and 16 are
+covered entirely by wrong-length intervals. Each module proves its base directly anyway, so
+every row stands on the same checker.
 
 ## How it works
 
@@ -56,11 +83,11 @@ This fetches nice-numbers-lean at the revision pinned in
 To regenerate a base's module:
 
 ```bash
-python3 gen/gen.py 17 2 3 17 > NiceCertified/Base17.lean
+python3 gen/gen.py 17 2 3 > NiceCertified/TwoThree/Base17.lean
 ```
 
-The arguments are the base, the exponent pair, and the widest interval the generator scans
-instead of splitting further.
+The arguments are the base and the exponent pair, then optionally the widest interval the
+generator scans instead of splitting further. It defaults to the base.
 
 ## Limits
 

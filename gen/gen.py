@@ -64,13 +64,17 @@ def gen(b, e1, e2, scan_w):
         if L1 + L2 != b: emit(a, c, 0, L1, L2, 0)
         else: tree(a, c, L1, L2, D)
     return lo, hi, ents, stats
-NAMES = {10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen",
-         17: "seventeen", 18: "eighteen", 20: "twenty", 22: "twentytwo", 24: "twentyfour"}
+PAIR_DIR = {(2, 3): "TwoThree"}
+
+def module_name(b, e1, e2):
+    return f"NiceCertified.{PAIR_DIR.get((e1, e2), f'Pair{e1}{e2}')}.Base{b}"
+
+def theorem_name(b, e1, e2):
+    return f"base_{b}_empty_{e1}_{e2}"
 
 def lean_module(b, e1, e2, scan_w):
     lo, hi, ents, st = gen(b, e1, e2, scan_w)
     name = f"cert_{b}_{e1}_{e2}"
-    word = NAMES.get(b, str(b))
     body = ",\n  ".join(f"⟨{a}, {c}, {t}, {L1}, {L2}, {h}⟩" for a, c, t, L1, L2, h in ents)
     return st, f"""import NiceCertified.Checker
 
@@ -92,7 +96,7 @@ theorem {name}_ok : checkChain {b} {e1} {e2} ({lo} + 1) {name} {hi} = true := by
   decide +kernel
 
 /-- **No `({e1},{e2})`-nice number exists in base {b}.** -/
-theorem base_{word}_empty_{e1}_{e2} (n : Nat) : ¬ Pandigital {b} {e1} {e2} n :=
+theorem {theorem_name(b, e1, e2)} (n : Nat) : ¬ Pandigital {b} {e1} {e2} n :=
   no_nice_of_cert (lo := {lo}) (hi := {hi}) (by decide) (by decide) (by decide)
     {name} {name}_ok n
 
@@ -100,7 +104,9 @@ end Nice.Cert
 """
 
 if __name__ == "__main__":
-    b, e1, e2, w = map(int, sys.argv[1:5])
+    args = sys.argv[1:]
+    b, e1, e2 = map(int, args[:3])
+    w = int(args[3]) if len(args) > 3 else b
     st, text = lean_module(b, e1, e2, w)
     print(f"base {b} ({e1},{e2}): {st}", file=sys.stderr)
     sys.stdout.write(text)
