@@ -1,0 +1,10 @@
+name = "nice-numbers-certified"
+defaultTargets = ["NiceCertified"]
+
+[[require]]
+name = "nice-numbers-lean"
+git = "https://github.com/Janzert/nice-numbers-lean.git"
+rev = "28b958ea28f901ec37beffc61f5c8e9d20530cdf"
+
+[[lean_lib]]
+name = "NiceCertified"

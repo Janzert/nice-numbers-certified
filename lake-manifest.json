@@ -1,0 +1,16 @@
+{"version": "1.2.0",
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/Janzert/nice-numbers-lean.git",
+   "type": "git",
+   "subDir": null,
+   "scope": "",
+   "rev": "28b958ea28f901ec37beffc61f5c8e9d20530cdf",
+   "name": "«nice-numbers-lean»",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "28b958ea28f901ec37beffc61f5c8e9d20530cdf",
+   "inherited": false,
+   "configFile": "lakefile.toml"}],
+ "name": "«nice-numbers-certified»",
+ "lakeDir": ".lake",
+ "fixedToolchain": false}
